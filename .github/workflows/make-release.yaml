@@ -17,6 +17,8 @@ jobs:
         config:
           - {os: macOS-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
+          - {os: macOS-latest,   r: 'oldrel'}
+          - {os: windows-latest, r: 'oldrel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -102,7 +104,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload macOS binary
+      - name: Upload source
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -110,6 +112,16 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: pkg/pkg-macOS-latest-release/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.tgz
           asset_name: ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.tgz
+          asset_content_type: application/gzip
+
+      - name: Upload macOS binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pkg/pkg-macOS-latest-release/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.tar.gz
+          asset_name: ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.tar.gz
           asset_content_type: application/gzip
 
       - name: Upload Windows binary
@@ -120,4 +132,24 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: pkg/pkg-windows-latest-release/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.zip
           asset_name: ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload macOS binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pkg/pkg-macOS-latest-oldrel/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.tar.gz
+          asset_name: ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}_oldrel.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload Windows binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pkg/pkg-windows-latest-oldrel/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}.zip
+          asset_name: ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}_oldrel.zip
           asset_content_type: application/zip
