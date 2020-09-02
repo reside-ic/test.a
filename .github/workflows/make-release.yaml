@@ -68,6 +68,8 @@ jobs:
           path: .github/pkg
 
   create-release:
+    runs-on: ubuntu-20.04
+
     needs: build-binaries
 
     steps:
