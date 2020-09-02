@@ -49,22 +49,25 @@ jobs:
         run: |
           install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("pkgbuild")
           remotes::install_cran("covr")
         shell: Rscript {0}
 
       # Properly, should build source first!
       - name: Build binary
+        shell: Rscript {0}
         run: |
-          mkdir -p .github/pkg
-          (cd .github/pkg && R CMD build ../..)
-          (cd .github/pkg && R CMD INSTALL --build *)
+          src <- pkgbuild::build(".", dest_path = tempdir())
+          bin <- pkgbuild::build(".", dest_path = tempdir(), binary = TRUE)
+          dir.create("build")
+          file.copy(c(src, bin), "build")
 
       - name: Upload package
         if: success()
         uses: actions/upload-artifact@v2
         with:
           name: pkg-${{ matrix.config.os }}-${{ matrix.config.r }}
-          path: .github/pkg
+          path: build
 
   create-release:
     runs-on: ubuntu-20.04
