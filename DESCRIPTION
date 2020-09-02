@@ -1,0 +1,18 @@
+Package: test.a
+Title: Build Binary Packages
+Version: 0.0.1
+Authors@R: c(person("Rich", "FitzJohn", role = c("aut", "cre"),
+                    email = "rich.fitzjohn@gmail.com"),
+             person("Imperial College of Science, Technology and Medicine",
+                    role = "cph"))
+Description: Automate building repositories.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Language: en-GB
+URL: https://github.com/reside-ic/test.a
+BugReports: https://github.com/reside-ic/test.a/issues
+Suggests:
+    testthat
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
